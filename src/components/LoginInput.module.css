@@ -1,0 +1,20 @@
+.login_input {
+  margin-bottom:.75rem;
+}
+
+.login_input label{
+  display:block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.login_input input{
+  width: 100%;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.login_input:last-child{
+ margin-bottom:1.5rem;
+}
