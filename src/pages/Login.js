@@ -1,42 +1,45 @@
 import React from 'react'
+import { useForm } from 'react-hook-form'
+
 import Input from '../components/Input'
 import styles from './Login.module.css'
 import background from './Login.jpg';
 
 const Login = () => {
 
-  const [form, setForm] = React.useState({
-    email: '',
-    password: ''
-  });
+  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
 
-  const setValue = (target) => {
-    const { id, value } = target;
-
-    setForm({ ...form, [id]: value })
+  const onSubmit = (props) => {
+    console.log(props)
   }
 
   return (
     <div className={styles.login} style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.container}>
           <Input
             label={'Email'}
-            id="email"
-            type="email"
-            validate="email"
             placeholder="usuario@email.com"
-            value={form.email}
-            setValue={setValue} />
+
+            {...register("email", {
+              required: true, pattern: {
+                value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: 'Email inválido'
+              }
+            })}
+            onChange={() => clearErrors("email")}
+          />
+          {errors.email && errors.email.type == 'required' && <p>Preencha este campo</p>}
+          {errors.email && <span role="alert">{errors.email.message}</span>}
+
           <Input
             label={'Senha'}
-            id="password"
-            type="password"
-            validate="default"
             style={{ marginBottom: '1.25rem' }}
+            type={'password'}
             placeholder="******"
-            value={form.password}
-            setValue={setValue} />
+            {...register("password", { required: true })}
+          />
+          {errors.password && errors.password.type == 'required' && <p>Preencha este campo</p>}
           <button type="submit" className={styles.button}>Acessar</button>
         </div>
       </form>
