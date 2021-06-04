@@ -1,20 +1,26 @@
-.login_input {
+.input {
   margin-bottom:.75rem;
 }
 
-.login_input label{
+.input label{
   display:block;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
 
-.login_input input{
+.input input{
   width: 100%;
   padding: 5px 10px;
   border: 1px solid #ddd;
   border-radius: 3px;
+  margin-bottom: 0.25rem;
 }
 
-.login_input:last-child{
+.input:last-child{
  margin-bottom:1.5rem;
+}
+
+.input .error {
+  font-size: 0.80rem;
+  color: red;
 }
