@@ -22,3 +22,8 @@
   color: #FFF;
   cursor: pointer;
 }
+
+input[type=text]:disabled, button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
