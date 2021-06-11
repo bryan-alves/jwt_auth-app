@@ -7,6 +7,7 @@ const Home = () => {
   return (
     <div>
       <h1>HOME</h1>
+      <button onClick={() => Auth.logout()}>Sair</button>
     </div>
   )
 }

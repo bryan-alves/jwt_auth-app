@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form'
 
 import Input from '../components/Input'
 import styles from './Login.module.css'
-import background from './Login.jpg';
+
 import { AuthContext } from '../contexts/AuthContext'
+import { Navigate } from 'react-router-dom';
 
 const Login = () => {
 
@@ -13,17 +14,17 @@ const Login = () => {
   const Auth = React.useContext(AuthContext)
 
   const onSubmit = async (form) => {
-    Auth.setLoading(true)
-
     const { email, password } = form;
 
     await Auth.login(email, password)
+  }
 
-    Auth.setLoading(false)
+  if (Auth.isLogged) {
+    return <Navigate to="/" />;
   }
 
   return (
-    <div className={styles.login} style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
+    <section className={styles.login}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.container}>
           {Auth.error && <p>{Auth.error}</p>}
@@ -58,7 +59,7 @@ const Login = () => {
           </button>
         </div>
       </form>
-    </div>
+    </section>
   )
 }
 

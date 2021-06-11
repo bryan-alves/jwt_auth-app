@@ -1,26 +1,19 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { AuthContext } from '../contexts/AuthContext'
 
 const ProtectedRoute = ({ ...props }) => {
   const Auth = React.useContext(AuthContext)
-  const navigate = useNavigate()
 
-  React.useEffect(() => {
+  if (Auth.isLogged === false) {
+    setTimeout(() => Auth.setError('Autenticação necessária!'), 0)
+    return <Navigate to="/login" />
+  } else if (Auth.isLogged === true) {
+    return <Route {...props}></Route>
+  }
 
-    if (!Auth.isLogged()) {
-      Auth.setError('Autenticação necessária!')
-      return navigate('/')
-    }
-  }, [Auth, navigate])
-
-  if (!Auth.isLogged())
-    return null
-
-  return (
-    <Route {...props}></Route>
-  )
+  return null
 }
 
 export default ProtectedRoute
