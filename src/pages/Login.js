@@ -1,37 +1,33 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
+
 import Input from '../components/Input'
 import styles from './Login.module.css'
 import background from './Login.jpg';
+import { AuthContext } from '../contexts/AuthContext'
 
 const Login = () => {
 
   const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
-  const [error, setError] = React.useState(null);
-  const [loading, setLoading] = React.useState(false)
+
+  const Auth = React.useContext(AuthContext)
 
   const onSubmit = async (form) => {
-    setLoading(true)
+    Auth.setLoading(true)
 
-    try {
-      const { data } = await axios.post('http://localhost:8000/api/login', form)
+    const { email, password } = form;
 
-      window.localStorage.setItem('token', data.access_token)
-      setError(null)
-    } catch (err) {
-      const { data } = err.response
-      setError(data.error)
-    } finally {
-      setLoading(false)
-    }
+    await Auth.login(email, password)
+
+    Auth.setLoading(false)
   }
 
   return (
     <div className={styles.login} style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.container}>
-          {error && <p>{error}</p>}
+          {Auth.error && <p>{Auth.error}</p>}
+          {Auth.user && <p>{Auth.user.name}</p>}
           <Input
             label={'Email'}
             placeholder="usuario@email.com"
@@ -42,7 +38,7 @@ const Login = () => {
               }
             })}
             onChange={() => clearErrors("email")}
-            disabled={loading}
+            disabled={Auth.loading}
           />
           {errors.email && errors.email.type === 'required' && <p>Preencha este campo</p>}
           {errors.email && <p>{errors.email.message}</p>}
@@ -53,12 +49,12 @@ const Login = () => {
             type={'password'}
             placeholder="******"
             {...register("password", { required: true })}
-            disabled={loading}
+            disabled={Auth.loading}
           />
           {errors.password && errors.password.type === 'required' && <p>Preencha este campo</p>}
 
-          <button type="submit" className={styles.button} disabled={loading}>
-            {!loading ? 'Acessar' : 'Aguarde...'}
+          <button type="submit" className={styles.button} disabled={Auth.loading}>
+            {!Auth.loading ? 'Acessar' : 'Aguarde...'}
           </button>
         </div>
       </form>
