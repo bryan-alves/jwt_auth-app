@@ -11,6 +11,9 @@ export const AuthStorage = ({ children }) => {
   const [loading, setLoading] = React.useState(null);
   const navigate = useNavigate();
 
+  const isLogged = () => {
+    return user !== null
+  }
 
   async function login(email, password) {
 
@@ -40,7 +43,7 @@ export const AuthStorage = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      user, setUser, error, setError, loading, setLoading, login
+      user, setUser, error, setError, loading, setLoading, login, isLogged
     }}>
       {children}
     </AuthContext.Provider>
