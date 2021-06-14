@@ -7,6 +7,8 @@ import styles from './Login.module.css'
 import { AuthContext } from '../contexts/AuthContext'
 import { Navigate } from 'react-router-dom';
 
+import Head from '../components/Head'
+
 const Login = () => {
 
   const { register, handleSubmit, formState: { errors }, clearErrors } = useForm();
@@ -25,6 +27,7 @@ const Login = () => {
 
   return (
     <section className={styles.login}>
+      <Head title="Login" description="Página de login" />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.container}>
           {Auth.error && <p>{Auth.error}</p>}
