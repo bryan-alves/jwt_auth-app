@@ -24,6 +24,7 @@ export const AuthStorage = ({ children }) => {
       await getUser(token.access_token)
       navigate('/');
     } catch (err) {
+      console.log()
       const catchError = err.response === undefined ? 'Error interno do servidor' : err.response.data.error
       setError(catchError)
     } finally {
@@ -64,7 +65,7 @@ export const AuthStorage = ({ children }) => {
       setUser(me)
       setIsLogged(true)
     } catch (err) {
-      const { data: catchError } = err.response
+      const catchError = err.response === undefined ? 'Error interno do servidor' : err.response.data.error
       logout()
       console.log(catchError)
     }
